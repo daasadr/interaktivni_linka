@@ -1,80 +1,25 @@
 // Data o bodech přímo v JS, nyní s obdélníkovými oblastmi (x, y, width, height v %)
-const areas = [
+const crossButtons = [
   {
-    "id": "skrin1",
-    "type": "modal",
-    "title": "Skříňka 1",
-    "description": "Moderní úložný prostor s elegantním designem.",
-    "link": "https://example.com/skrin1",
-    "x": 8,
-    "y": 45,
-    "width": 28,
-    "height": 38
+    x: 18,
+    y: 62,
+    link: 'https://example.com/skrin1',
+    title: 'Skříňka 1',
+    description: 'Tato skříňka nabízí moderní úložné prostory s vysokou kapacitou a elegantním designem. Ideální pro každý domov.'
   },
   {
-    "id": "stul",
-    "type": "modal",
-    "title": "Stůl",
-    "description": "Odolná pracovní plocha vhodná do každé domácnosti.",
-    "link": "https://example.com/stul",
-    "x": 36,
-    "y": 50,
-    "width": 32,
-    "height": 32
+    x: 51,
+    y: 54,
+    link: 'https://example.com/stul',
+    title: 'Stůl',
+    description: 'Odolná pracovní plocha s kvalitním povrchem, který odolává poškrábání. Ideální pro kancelář i domácí využití.'
   },
   {
-    "id": "zasuvka",
-    "type": "modal",
-    "title": "Zásuvkový modul",
-    "description": "Rychlý přístup k často používaným nástrojům.",
-    "link": "https://example.com/zasuvka",
-    "x": 16,
-    "y": 62,
-    "width": 24,
-    "height": 30
-  },
-  {
-    "id": "drez",
-    "type": "modal",
-    "title": "Dřez s odkapávačem",
-    "description": "Nerezový dřez s odkapávačem pro snadné mytí.",
-    "link": "https://example.com/drez",
-    "x": 66,
-    "y": 55,
-    "width": 28,
-    "height": 32
-  },
-  {
-    "id": "bezpecnost",
-    "type": "modal",
-    "highlight": true,
-    "title": "Bezpečnostní upozornění",
-    "description": "Používejte ochranné pomůcky. Bezpečnost na prvním místě!",
-    "link": "https://example.com/bezpecnost",
-    "x": 44,
-    "y": 25,
-    "width": 32,
-    "height": 32
-  },
-  {
-    "id": "info1",
-    "type": "tooltip",
-    "title": "Tip: Úspora místa",
-    "description": "Využijte horní police na lehké předměty.",
-    "x": 12,
-    "y": 12,
-    "width": 22,
-    "height": 20
-  },
-  {
-    "id": "info2",
-    "type": "tooltip",
-    "title": "Tip: Údržba",
-    "description": "Kontrolujte těsnění dřezu.",
-    "x": 70,
-    "y": 15,
-    "width": 22,
-    "height": 20
+    x: 88,
+    y: 60,
+    link: 'https://example.com/drez',
+    title: 'Dřez',
+    description: 'Nerezový dřez s odkapávačem, který nabízí snadnou údržbu a elegantní vzhled. Skvělá volba pro moderní kuchyň.'
   }
 ];
 
@@ -82,115 +27,100 @@ const hotspotLayer = document.getElementById('hotspot-layer');
 const image = document.querySelector('.main-image');
 const container = document.querySelector('.interactive-image-container');
 
-let tooltipEl = null;
-let modalEl = null;
-let currentArea = null;
+let popupEl = null;
+let popupTimeout = null;
 
-function createAreaDiv(area) {
-  const el = document.createElement('div');
-  el.className = 'active-area';
-  el.style.left = area.x + '%';
-  el.style.top = area.y + '%';
-  el.style.width = area.width + '%';
-  el.style.height = area.height + '%';
-  el.setAttribute('tabindex', '0');
-  el.setAttribute('aria-label', area.title);
-  return el;
-}
-
-function showPopupSticky(area) {
-  if (currentArea === area) return;
-  hidePopup();
-  currentArea = area;
-  let popup;
-  if (area.type === 'tooltip') {
-    popup = document.createElement('div');
-    popup.className = 'popup-tooltip visible';
-    popup.innerHTML = `<div class='popup-title'>${area.title}</div><div>${area.description}</div>`;
-    tooltipEl = popup;
-  } else {
-    popup = document.createElement('div');
-    popup.className = 'popup-modal visible' + (area.highlight ? ' highlight' : '');
-    popup.innerHTML = `
-      <button class="popup-close" aria-label="Zavřít">&times;</button>
-      <div class="popup-title">${area.title}</div>
-      <div class="popup-description">${area.description}</div>
-      ${area.link ? `<div class="popup-actions"><a class="popup-link" href="${area.link}" target="_blank" rel="noopener">Více informací</a></div>` : ''}
+function renderCrossButtons() {
+  // Smažu staré, pokud existují
+  const old = document.querySelectorAll('.cross-btn');
+  old.forEach(el => el.remove());
+  crossButtons.forEach((btn, i) => {
+    const el = document.createElement('button');
+    el.className = 'cross-btn';
+    el.style.position = 'absolute';
+    el.style.left = `calc(${btn.x}% - 24px)`;
+    el.style.top = `calc(${btn.y}% - 24px)`;
+    el.style.width = '48px';
+    el.style.height = '48px';
+    el.style.background = 'none';
+    el.style.border = 'none';
+    el.style.padding = '0';
+    el.style.cursor = 'pointer';
+    el.style.zIndex = '100';
+    el.setAttribute('aria-label', btn.title);
+    el.innerHTML = `
+      <svg class="cross-svg" width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="19" stroke="#1976d2" stroke-width="3" fill="none"/>
+        <line x1="22" y1="13" x2="22" y2="31" stroke="#1976d2" stroke-width="3" stroke-linecap="round"/>
+        <line x1="13" y1="22" x2="31" y2="22" stroke="#1976d2" stroke-width="3" stroke-linecap="round"/>
+      </svg>
     `;
-    modalEl = popup;
-    popup.querySelector('.popup-close').onclick = hidePopup;
-    document.addEventListener('keydown', escClose);
-  }
-  popup.style.position = 'absolute';
-  // Pozice popupu do středu oblasti
-  const imgRect = image.getBoundingClientRect();
-  const layerRect = hotspotLayer.getBoundingClientRect();
-  const left = ((area.x + area.width / 2) / 100) * imgRect.width + imgRect.left - layerRect.left;
-  const top = ((area.y + area.height / 2) / 100) * imgRect.height + imgRect.top - layerRect.top;
-  popup.style.left = `calc(${left}px)`;
-  popup.style.top = `calc(${top}px)`;
-  popup.style.transform = 'translate(-50%, -50%) scale(1)';
-  popup.style.minWidth = '220px';
-  popup.style.maxWidth = '320px';
-  popup.style.boxSizing = 'border-box';
-  popup.style.pointerEvents = 'auto';
-  hotspotLayer.appendChild(popup);
-}
-
-function hidePopup() {
-  if (tooltipEl && tooltipEl.parentNode) tooltipEl.parentNode.removeChild(tooltipEl);
-  if (modalEl && modalEl.parentNode) modalEl.parentNode.removeChild(modalEl);
-  tooltipEl = null;
-  modalEl = null;
-  currentArea = null;
-  document.removeEventListener('keydown', escClose);
-}
-
-function escClose(e) {
-  if (e.key === 'Escape') hidePopup();
-}
-
-function renderAreas() {
-  hotspotLayer.innerHTML = '';
-  areas.forEach(area => {
-    const el = createAreaDiv(area);
+    el.onclick = (e) => {
+      e.stopPropagation();
+      window.open(btn.link, '_blank');
+    };
+    el.addEventListener('mouseenter', () => showPopupForCross(btn, el));
+    el.addEventListener('focus', () => showPopupForCross(btn, el));
+    el.addEventListener('mouseleave', tryHidePopup);
+    el.addEventListener('blur', tryHidePopup);
     hotspotLayer.appendChild(el);
   });
 }
 
-function getRelativeCoords(e, img) {
-  const rect = img.getBoundingClientRect();
-  const x = ((e.clientX - rect.left) / rect.width) * 100;
-  const y = ((e.clientY - rect.top) / rect.height) * 100;
-  return { x, y };
-}
-
-function findAreaAt(x, y) {
-  return areas.find(area =>
-    x >= area.x && x <= area.x + area.width &&
-    y >= area.y && y <= area.y + area.height
-  );
-}
-
-function handleContainerMouseMove(e) {
-  const coords = getRelativeCoords(e, image);
-  const area = findAreaAt(coords.x, coords.y);
-  if (area) {
-    showPopupSticky(area);
-  } else {
-    hidePopup();
-  }
-}
-
-function handleContainerMouseLeave() {
+function showPopupForCross(btn, anchor) {
+  clearTimeout(popupTimeout);
   hidePopup();
+  popupEl = document.createElement('div');
+  popupEl.className = 'popup-modal visible';
+  popupEl.innerHTML = `
+    <button class="popup-close" aria-label="Zavřít">&times;</button>
+    <div class="popup-title">${btn.title}</div>
+    <div class="popup-description">${btn.description}</div>
+    <div class="popup-actions"><a class="popup-link" href="${btn.link}" target="_blank" rel="noopener">Více informací</a></div>
+  `;
+  popupEl.style.position = 'absolute';
+  // Nové pozicování: popup bude vedle křížku (vpravo, nebo vlevo pokud by přesahoval)
+  const layerRect = hotspotLayer.getBoundingClientRect();
+  const crossRect = anchor.getBoundingClientRect();
+  const popupWidth = 220; // musí odpovídat max-width v CSS
+  const popupHeight = 120; // max-height v CSS
+  let left = crossRect.right - layerRect.left + 10;
+  let top = (crossRect.top + crossRect.bottom) / 2 - layerRect.top - popupHeight / 2;
+  // Pokud by popup přesáhl vpravo, zobraz vlevo od křížku
+  if (left + popupWidth > layerRect.width) {
+    left = crossRect.left - layerRect.left - popupWidth - 10;
+  }
+  // Pokud by popup přesáhl nahoru/dolů, zarovnej k okraji
+  if (top < 0) top = 0;
+  if (top + popupHeight > layerRect.height) top = layerRect.height - popupHeight;
+  popupEl.style.left = `${left}px`;
+  popupEl.style.top = `${top}px`;
+  popupEl.style.minWidth = '160px';
+  popupEl.style.maxWidth = '220px';
+  popupEl.style.boxSizing = 'border-box';
+  popupEl.style.pointerEvents = 'auto';
+  popupEl.style.zIndex = '200';
+  popupEl.querySelector('.popup-close').onclick = hidePopup;
+  popupEl.addEventListener('mouseenter', () => clearTimeout(popupTimeout));
+  popupEl.addEventListener('mouseleave', tryHidePopup);
+  hotspotLayer.appendChild(popupEl);
 }
 
-window.addEventListener('resize', hidePopup);
-window.addEventListener('scroll', hidePopup);
+function tryHidePopup() {
+  clearTimeout(popupTimeout);
+  popupTimeout = setTimeout(() => {
+    if (popupEl && !popupEl.matches(':hover')) {
+      hidePopup();
+    }
+  }, 180);
+}
+
+function hidePopup() {
+  clearTimeout(popupTimeout);
+  if (popupEl && popupEl.parentNode) popupEl.parentNode.removeChild(popupEl);
+  popupEl = null;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderAreas();
-  container.addEventListener('mousemove', handleContainerMouseMove);
-  container.addEventListener('mouseleave', handleContainerMouseLeave);
+  renderCrossButtons();
 }); 

@@ -27,60 +27,7 @@ body {
   pointer-events: none;
 }
 
-.hotspot {
-  position: absolute;
-  width: 36px;
-  height: 36px;
-  background: #1976d2;
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(25,118,210,0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 22px;
-  cursor: pointer;
-  pointer-events: auto;
-  transition: transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s;
-  z-index: 2;
-}
-.hotspot:hover {
-  transform: scale(1.13);
-  box-shadow: 0 4px 16px rgba(25,118,210,0.22);
-}
-.hotspot.highlight {
-  background: #ffe066;
-  color: #b8860b;
-  box-shadow: 0 4px 16px rgba(255,224,102,0.22);
-}
-
-/* Tooltip */
-.tooltip {
-  position: absolute;
-  min-width: 180px;
-  max-width: 260px;
-  background: #fff;
-  color: #222;
-  border-radius: 8px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.13);
-  padding: 14px 18px 12px 18px;
-  font-size: 15px;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateY(10px) scale(0.98);
-  transition: opacity 0.22s, transform 0.22s;
-  z-index: 10;
-}
-.tooltip.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-}
-.tooltip-title {
-  font-weight: 600;
-  margin-bottom: 4px;
-  color: #1976d2;
-}
+/* Odstraněny zbytečné styly pro .hotspot, .tooltip, .modal, .popup-tooltip, .modal-backdrop, #modal-root, .interactive-image-container::after a související media query bloky */
 
 /* Modal */
 #modal-root {
@@ -186,52 +133,34 @@ body {
   outline-offset: 1px;
 }
 
-/* Popup tooltip */
-.popup-tooltip {
-  position: absolute;
-  background: #fff;
-  color: #222;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-  padding: 20px 26px 18px 26px;
-  font-size: 16px;
-  min-width: 220px;
-  max-width: 320px;
-  opacity: 0;
-  transform: scale(0.97);
-  transition: opacity 0.22s, transform 0.22s;
-  z-index: 30;
-  pointer-events: auto;
-  box-sizing: border-box;
-}
-.popup-tooltip.visible {
-  opacity: 1;
-  transform: scale(1);
-}
-.popup-title {
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: #1976d2;
-  font-size: 1.08em;
-}
-
 /* Popup modal (malé, decentní) */
 .popup-modal {
   position: absolute;
-  background: #fff;
+  background: rgba(255,255,255,0.97);
   color: #222;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-  padding: 20px 26px 18px 26px;
-  font-size: 16px;
-  min-width: 220px;
-  max-width: 320px;
+  border-radius: 9px;
+  border: 1px solid #222;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.13);
+  padding: 16px 24px 16px 24px;
+  font-size: 12px;
+  min-width: 170px;
+  max-width: 260px;
+  min-height: 44px;
+  max-height: 140px;
   opacity: 0;
   transform: scale(0.97);
   transition: opacity 0.22s, transform 0.22s;
-  z-index: 30;
+  z-index: 200;
   pointer-events: auto;
   box-sizing: border-box;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  overflow: visible;
 }
 .popup-modal.visible {
   opacity: 1;
@@ -243,85 +172,115 @@ body {
   box-shadow: 0 4px 24px rgba(255,224,102,0.18);
 }
 .popup-modal .popup-title {
-  color: #b8860b;
+  font-weight: 700;
+  margin-bottom: 2px;
+  color: #1a397b;
+  font-size: 0.99em;
+  text-align: center;
+  word-break: break-word;
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
-.popup-description {
-  margin-bottom: 14px;
-  color: #444;
+.popup-modal .popup-description {
+  text-align: center;
+  font-size: 0.99em;
+  margin-bottom: 3px;
+  color: #222;
+  word-break: break-word;
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
-.popup-actions {
-  text-align: right;
+.popup-modal .popup-actions {
+  text-align: center;
+  width: 100%;
+  margin: 0;
 }
-.popup-link {
-  background: #1976d2;
+.popup-modal .popup-link {
+  background: #1a397b;
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 8px 18px;
-  font-size: 1em;
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-size: 0.93em;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(25,118,210,0.10);
+  box-shadow: 0 1px 3px rgba(26,57,123,0.10);
   transition: background 0.18s;
   text-decoration: none;
   display: inline-block;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  margin-top: 0;
+  margin-bottom: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
-.popup-link:hover {
-  background: #1251a3;
+.popup-modal .popup-link:hover {
+  background: #16306a;
 }
-.popup-close {
+.popup-modal .popup-close {
   position: absolute;
-  top: 10px;
-  right: 16px;
+  top: 7px;
+  right: 10px;
   background: none;
   border: none;
-  font-size: 1.3em;
+  font-size: 1.1em;
   color: #888;
   cursor: pointer;
   transition: color 0.18s;
 }
-.popup-close:hover {
+.popup-modal .popup-close:hover {
   color: #1976d2;
 }
 
 /* Šipka pod oknem (volitelně, lze přidat ::after) */
 .popup-tooltip::after, .popup-modal::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: -10px;
-  border-width: 6px 7px 0 7px;
-  border-style: solid;
-  border-color: #fff transparent transparent transparent;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.10));
-}
-.popup-modal.highlight::after {
-  border-color: #fffbe6 transparent transparent transparent;
-}
-
-/* Responsivita */
-@media (max-width: 900px) {
-  #hotspot-layer {
-    display: none;
-  }
-  .active-area {
-    display: none;
-  }
-  .interactive-image-container::after {
-    content: 'Při šířce menší než 900px se aktivní prvky skryjí.';
-    display: block;
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    background: #f5f5f5;
-    color: #444;
-    font-size: 1.1em;
-    text-align: center;
-    padding: 8px 0 6px 0;
-    border-radius: 12px 12px 0 0;
-    z-index: 5;
-  }
+  display: none !important;
+  content: none !important;
 }
 
 /* Skryji původní styly pro .hotspot, .modal, .tooltip atd. */
 .hotspot, .modal, .tooltip, #modal-root { display: none !important; } 
+
+.cross-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  transition: filter 0.18s;
+  z-index: 100;
+  pointer-events: auto;
+  width: 36px;
+  height: 36px;
+}
+.cross-svg {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.28s cubic-bezier(.4,2,.6,1);
+  will-change: transform;
+}
+.cross-btn:hover .cross-svg,
+.cross-btn:focus .cross-svg,
+.cross-btn:active .cross-svg {
+  transform: rotate(90deg) scale(1.15);
+  filter: drop-shadow(0 2px 8px rgba(26,57,123,0.18));
+}
+.cross-svg circle,
+.cross-svg line {
+  stroke: #1a397b;
+}
+
+.active-area {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: rgba(0,0,0,0);
+  pointer-events: none;
+} 
