@@ -284,3 +284,12 @@ body {
   background: rgba(0,0,0,0);
   pointer-events: none;
 } 
+
+@media (max-width: 900px) {
+  #hotspot-layer {
+    display: none !important;
+  }
+  .cross-btn {
+    display: none !important;
+  }
+} 
