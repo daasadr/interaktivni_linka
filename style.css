@@ -155,7 +155,7 @@ body {
   color: var(--highlight-accent);
 }
 .modal-description {
-  margin: 0 0 var(--spacing-md) 0;
+  margin: 0 0 var(--spacing-modal-description-bottom) 0;
   color: var(--text-muted);
 }
 .modal-actions {
@@ -203,8 +203,19 @@ body {
   pointer-events: auto;
 }
 .active-area:focus {
-  outline: 2px dashed var(--primary-color);
-  outline-offset: 1px;
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Enhanced focus styles for accessibility */
+.cross-btn:focus {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.popup-link:focus {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
 }
 
 /* Popup modal (malé, decentní) */
@@ -225,6 +236,8 @@ body {
   transition: opacity var(--transition-medium), transform var(--transition-medium);
   z-index: var(--z-popup);
   pointer-events: none;
+  /* Hide from screen readers when not visible, but allow focus */
+  visibility: hidden;
   box-sizing: border-box;
   font-family: var(--font-family-secondary);
   text-align: center;
@@ -255,12 +268,22 @@ body {
   pointer-events: auto;
 }
 
-/* Show popup on hover */
-.hotspot-wrapper:hover .popup-modal {
+/* Show popup on hover and focus */
+.hotspot-wrapper:hover .popup-modal,
+.cross-btn:focus .popup-modal,
+.hotspot-wrapper:focus-within .popup-modal {
   opacity: 1;
   transform: translateY(-50%) scale(1);
   pointer-events: auto;
+  visibility: visible;
 }
+
+/* 
+ * Keyboard Navigation Flow:
+ * 1. Tab to button -> popup appears via :focus
+ * 2. Tab again -> focus moves to link inside popup (popup stays visible via :focus-within)
+ * 3. Tab again -> focus moves to next hotspot button, popup hides
+ */
 
 /* Position popup to the left if it would overflow (for right-side icons) */
 .hotspot-wrapper:last-child .popup-modal {
@@ -275,8 +298,13 @@ body {
   right: -15px;
 }
 
-.hotspot-wrapper:last-child:hover .popup-modal {
+.hotspot-wrapper:last-child:hover .popup-modal,
+.hotspot-wrapper:last-child .cross-btn:focus .popup-modal,
+.hotspot-wrapper:last-child:focus-within .popup-modal {
   transform: translateY(-50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
 }
 .popup-modal.highlight {
   background: var(--highlight-bg);
@@ -400,5 +428,79 @@ body {
 @container (max-width: 900px) {
   .hotspot-wrapper {
     display: none !important;
+  }
+}
+
+/* Reduced motion preferences for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable all animations and transitions */
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  
+  /* Remove transforms but keep hover states visible */
+  .hotspot-wrapper:hover .cross-svg,
+  .cross-btn:focus .cross-svg,
+  .cross-btn:active .cross-svg {
+    transform: none !important;
+  }
+  
+  /* Simplify popup appearance */
+  .popup-modal {
+    transform: translateY(-50%) !important;
+  }
+  
+  .hotspot-wrapper:hover .popup-modal,
+  .cross-btn:focus .popup-modal,
+  .hotspot-wrapper:focus-within .popup-modal {
+    transform: translateY(-50%) !important;
+  }
+  
+  .hotspot-wrapper:last-child .popup-modal {
+    transform: translateY(-50%) !important;
+  }
+  
+  .hotspot-wrapper:last-child:hover .popup-modal,
+  .hotspot-wrapper:last-child .cross-btn:focus .popup-modal,
+  .hotspot-wrapper:last-child:focus-within .popup-modal {
+    transform: translateY(-50%) !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .cross-btn {
+    border: 2px solid var(--secondary-color);
+    background: var(--bg-white);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--secondary-color);
+  }
+  
+  .popup-modal {
+    border-width: 2px;
+    background: var(--bg-white);
+    box-shadow: 0 0 0 2px var(--text-color);
+  }
+  
+  .cross-svg {
+    filter: contrast(1.5);
+  }
+  
+  .hotspot-wrapper:hover .cross-btn,
+  .cross-btn:focus,
+  .cross-btn:active,
+  .hotspot-wrapper:focus-within .cross-btn {
+    background: var(--secondary-color);
+    box-shadow: 0 0 0 2px var(--secondary-color);
+  }
+  
+  .hotspot-wrapper:hover .cross-svg,
+  .cross-btn:focus .cross-svg,
+  .cross-btn:active .cross-svg,
+  .hotspot-wrapper:focus-within .cross-svg {
+    filter: brightness(0) invert(1) contrast(1.5);
   }
 } 
