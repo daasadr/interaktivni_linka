@@ -7,14 +7,56 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="interactive-image-container">
-    <picture>
-      <source srcset="public/foto.webp" type="image/webp">
-      <img src="public/foto.jpg" alt="linka" class="main-image" />
-    </picture>
-    <div id="hotspot-layer"></div>
-  </div>
-  <div id="modal-root"></div>
-  <script src="script.js"></script>
+  <main role="main">
+    <div class="interactive-image-container" role="img" aria-label="Interaktivní obrázek kuchyňské linky s aktivními body">
+      <picture>
+        <source srcset="public/foto.webp" type="image/webp">
+        <img src="public/foto.jpg" alt="Moderní kuchyňská linka s bílými skříňkami, dřevěnou pracovní deskou a nerezovým dřezem" class="main-image" />
+      </picture>
+      <div id="hotspot-layer" role="group" aria-label="Interaktivní body s informacemi o produktech">
+      <!-- Hotspot 1: Skříňka 1 -->
+      <div class="hotspot-wrapper" style="left: calc(17% - 24px); top: calc(62% - 24px);">
+        <button class="cross-btn" aria-label="Skříňka 1" aria-expanded="false" aria-haspopup="dialog" aria-describedby="popup-skrinka1">
+          <img src="public/cross-icon.svg" alt="" class="cross-svg" width="44" height="44" role="presentation">
+        </button>
+        <div class="popup-modal" id="popup-skrinka1" role="dialog" aria-labelledby="title-skrinka1" aria-describedby="desc-skrinka1" aria-hidden="true">
+          <div class="popup-title" id="title-skrinka1">Skříňka 1</div>
+          <div class="popup-description" id="desc-skrinka1">Tato skříňka nabízí moderní úložné prostory s vysokou kapacitou a elegantním designem. Ideální pro každý domov.</div>
+          <div class="popup-actions">
+            <a class="popup-link" href="https://example.com/skrin1" target="_blank" rel="noopener" aria-describedby="desc-skrinka1">Více informací</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotspot 2: Stůl -->
+      <div class="hotspot-wrapper" style="left: calc(52% - 24px); top: calc(52% - 24px);">
+        <button class="cross-btn" aria-label="Stůl" aria-expanded="false" aria-haspopup="dialog" aria-describedby="popup-stul">
+          <img src="public/cross-icon.svg" alt="" class="cross-svg" width="44" height="44" role="presentation">
+        </button>
+        <div class="popup-modal" id="popup-stul" role="dialog" aria-labelledby="title-stul" aria-describedby="desc-stul" aria-hidden="true">
+          <div class="popup-title" id="title-stul">Stůl</div>
+          <div class="popup-description" id="desc-stul">Odolná pracovní plocha s kvalitním povrchem, který odolává poškrábání. Ideální pro kancelář i domácí využití.</div>
+          <div class="popup-actions">
+            <a class="popup-link" href="https://example.com/stul" target="_blank" rel="noopener" aria-describedby="desc-stul">Více informací</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotspot 3: Dřez -->
+      <div class="hotspot-wrapper" style="left: calc(87% - 24px); top: calc(71% - 24px);">
+        <button class="cross-btn" aria-label="Dřez" aria-expanded="false" aria-haspopup="dialog" aria-describedby="popup-drez">
+          <img src="public/cross-icon.svg" alt="" class="cross-svg" width="44" height="44" role="presentation">
+        </button>
+        <div class="popup-modal" id="popup-drez" role="dialog" aria-labelledby="title-drez" aria-describedby="desc-drez" aria-hidden="true">
+          <div class="popup-title" id="title-drez">Dřez</div>
+          <div class="popup-description" id="desc-drez">Nerezový dřez s odkapávačem, který nabízí snadnou údržbu a elegantní vzhled. Skvělá volba pro moderní kuchyň.</div>
+          <div class="popup-actions">
+            <a class="popup-link" href="https://example.com/drez" target="_blank" rel="noopener" aria-describedby="desc-drez">Více informací</a>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </main>
 </body>
 </html> 
