@@ -8,7 +8,10 @@
 </head>
 <body>
   <div class="interactive-image-container">
-    <img src="public/foto.jpg" alt="linka" class="main-image" />
+    <picture>
+      <source srcset="public/foto.webp" type="image/webp">
+      <img src="public/foto.jpg" alt="linka" class="main-image" />
+    </picture>
     <div id="hotspot-layer"></div>
   </div>
   <div id="modal-root"></div>
