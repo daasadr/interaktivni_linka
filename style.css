@@ -88,6 +88,19 @@ body {
   container-type: inline-size;
 }
 
+/* Responzivní úpravy pro menší obrazovky */
+@media (max-width: 720px) {
+  .interactive-image-container {
+    max-width: 100%;
+    margin: var(--spacing-container-top) 0 0 0;
+    border-radius: 0;
+  }
+  
+  .main-image {
+    border-radius: 0;
+  }
+}
+
 .main-image {
   width: 100%;
   display: block;
@@ -99,8 +112,6 @@ body {
   top: 0; left: 0; right: 0; bottom: 0;
   pointer-events: none;
 }
-
-/* Odstraněny zbytečné styly pro .hotspot, .tooltip, .modal, .popup-tooltip, .modal-backdrop, #modal-root, .interactive-image-container::after a související media query bloky */
 
 /* Modal */
 #modal-root {
