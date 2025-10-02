@@ -214,14 +214,12 @@ body {
   pointer-events: auto;
 }
 .active-area:focus {
-  outline: 3px solid var(--primary-color);
-  outline-offset: 2px;
+  outline: none;
 }
 
 /* Enhanced focus styles for accessibility */
 .cross-btn:focus {
-  outline: 3px solid var(--primary-color);
-  outline-offset: 2px;
+  outline: none;
 }
 
 .popup-link:focus {
@@ -260,10 +258,10 @@ body {
   overflow: visible;
   text-wrap: balance;
   
-  /* Positioning relative to icon */
-  left: calc(100% + 10px);
+  /* Default positioning - will be overridden by specific classes */
+  left: 0;
   top: 50%;
-  transform-origin: left center;
+  transform-origin: center center;
   transform: translateY(-50%) scale(0.97);
 }
 
@@ -271,7 +269,7 @@ body {
 .popup-modal::before {
   content: '';
   position: absolute;
-  left: -15px;
+  right: -15px;
   top: 0;
   bottom: 0;
   width: 15px;
@@ -296,27 +294,31 @@ body {
  * 3. Tab again -> focus moves to next hotspot button, popup hides
  */
 
-/* Position popup to the left if it would overflow (for right-side icons) */
-.hotspot-wrapper:last-child .popup-modal {
-  left: calc(-100% - 210px);
+/* Smart positioning based on hotspot location */
+/* Hotspots on the left side of image -> popup on the right */
+.hotspot-left .popup-modal {
+  left: calc(100% + 10px);
+  transform-origin: left center;
+  transform: translateY(-50%) scale(0.97);
+}
+
+.hotspot-left .popup-modal::before {
+  left: -15px;
+  right: auto;
+}
+
+/* Hotspots on the right side of image -> popup on the left */
+.hotspot-right .popup-modal {
+  left: -260px;
   transform-origin: right center;
   transform: translateY(-50%) scale(0.97);
 }
 
-/* Bridge for right-positioned popup */
-.hotspot-wrapper:last-child .popup-modal::before {
-  left: auto;
+.hotspot-right .popup-modal::before {
   right: -15px;
+  left: auto;
 }
 
-.hotspot-wrapper:last-child:hover .popup-modal,
-.hotspot-wrapper:last-child .cross-btn:focus .popup-modal,
-.hotspot-wrapper:last-child:focus-within .popup-modal {
-  transform: translateY(-50%) scale(1);
-  opacity: 1;
-  pointer-events: auto;
-  visibility: visible;
-}
 .popup-modal.highlight {
   background: var(--highlight-bg);
   border: 2px solid var(--highlight-border);
