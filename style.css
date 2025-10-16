@@ -269,7 +269,7 @@ body {
 .popup-modal::before {
   content: '';
   position: absolute;
-  right: -15px;
+  left: -15px;
   top: 0;
   bottom: 0;
   width: 15px;
@@ -309,7 +309,8 @@ body {
 
 /* Hotspots on the right side of image -> popup on the left */
 .hotspot-right .popup-modal {
-  left: -260px;
+  right: calc(100% + 10px);
+  left: auto;
   transform-origin: right center;
   transform: translateY(-50%) scale(0.97);
 }
