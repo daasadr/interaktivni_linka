@@ -287,6 +287,12 @@ body {
   visibility: visible;
 }
 
+/* Increase z-index when popup is visible to prevent other hotspots from showing through */
+.hotspot-wrapper:hover,
+.hotspot-wrapper:focus-within {
+  z-index: var(--z-popup);
+}
+
 /* 
  * Keyboard Navigation Flow:
  * 1. Tab to button -> popup appears via :focus
